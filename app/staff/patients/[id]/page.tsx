@@ -153,10 +153,6 @@ function PatientChart({ patientId }: { patientId: string }) {
                   <dd>{p.blood_type ?? "—"}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">Genotype</dt>
-                  <dd>{p.genotype ?? "—"}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">Address</dt>
                   <dd className="text-right">{p.residential_address ?? "—"}</dd>
                 </div>

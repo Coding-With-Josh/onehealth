@@ -81,7 +81,6 @@ export interface StaffPatientProfile {
   date_of_birth: string | null;
   gender: string | null;
   blood_type: string | null;
-  genotype: string | null;
   residential_address: string | null;
 }
 
