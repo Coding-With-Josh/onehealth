@@ -218,7 +218,16 @@ export function refreshTokens(): Promise<boolean> {
         // Phase 3 row 2 — discard the result if the session was cleared
         // (logout) while this request was in flight.
         if (generation !== snapshotGeneration) return false;
-        if (typeof access !== "string" || typeof nextRefresh !== "string") return false;
+        // Fail-closed: a refresh response without BOTH a new access token
+        // and the rotated refresh token breaks the rotation contract
+        // (ROTATE_REFRESH_TOKENS + BLACKLIST_AFTER_ROTATION on the API —
+        // the old refresh is now consumed and unrecoverable). Treat it
+        // like an invalid session rather than hanging on "loading" or
+        // keeping a refresh we can no longer use.
+        if (typeof access !== "string" || typeof nextRefresh !== "string") {
+          resetSession();
+          return false;
+        }
 
         accessToken = access;
         refreshToken = nextRefresh;
@@ -267,6 +276,12 @@ export async function bootstrap(): Promise<void> {
     return;
   }
 
+  // Phase 3 — the generation snapshot below is taken BEFORE the /me call
+  // and re-checked after it. A logout() (or login()) that races with the
+  // bootstrap owns the session; the /me result must never resurrect a
+  // cleared session.
+  const bootGeneration = generation;
+
   // Fetch the profile for display; a failure here is NOT fatal — the
   // stored user snapshot already tells us the role for routing.
   let profile: Record<string, unknown> | null = null;
@@ -279,12 +294,16 @@ export async function bootstrap(): Promise<void> {
     profile = null;
   }
 
-  if (state.status === "authenticated" && state.user.id === user.id) {
-    state = { status: "authenticated", user, profile };
-    notify();
-  } else {
-    resetSession();
-  }
+  if (generation !== bootGeneration) return; // session cleared while /me ran
+  if (state.status === "authenticated" && state.user.id !== user.id) return; // concurrent login won
+
+  // Promote loading → authenticated. IMPORTANT: during a page-load
+  // bootstrap the store always starts at "loading" — nobody called
+  // applyAuthenticated yet — so this transition must not require
+  // state.status === "authenticated" (that guard caused every reload to
+  // wipe the session and bounce to /sign-in).
+  state = { status: "authenticated", user, profile: profile ?? user.profile ?? null };
+  notify();
 }
 
 /** Log out. Always clears local state; API blacklist is best-effort. */

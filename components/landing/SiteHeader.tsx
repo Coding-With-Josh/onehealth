@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -22,7 +23,19 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-foreground/10 bg-background/80 backdrop-blur-md">
       <nav className="mx-auto max-w-7xl px-6">
         <div className="flex items-center justify-between py-4">
-          <Link href="/" className="font-mix text-2xl tracking-tight text-foreground">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-mix text-2xl tracking-tight text-foreground"
+          >
+            {/* Brand logo (public/logo.png) — static, compiled-in asset */}
+            <Image
+              src="/logo.png"
+              alt="OneHealth logo"
+              width={28}
+              height={28}
+              className="size-7 shrink-0 rounded-lg object-contain"
+              priority
+            />
             onehealth
           </Link>
 

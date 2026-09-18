@@ -19,8 +19,8 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 const COMING_SOON: Record<string, string[]> = {
-  patient: ["Dashboard", "Medical records", "Patient card", "Visits", "Access requests"],
-  hospital_staff: ["Hospital dashboard", "Card lookup", "Patient chart", "Active visits workspace"],
+  patient: [],
+  hospital_staff: ["Visit workspace"],
   platform_admin: ["Hospital verification queue", "Global audit log"],
 };
 
@@ -57,16 +57,73 @@ export default function AccountPage() {
 
           <p className="mt-6 text-sm text-black/45 dark:text-white/40">
             Your session works — tokens, silent refresh, and route guards are live.
-            Your portal pages ship next:
+            {user?.user_type === "patient"
+              ? " Open the patient portal:"
+              : user?.user_type === "hospital_staff"
+                ? " Open the hospital workspace:"
+                : " Your console ships next:"}
           </p>
-          <ul className="mt-3 space-y-1.5 text-sm">
-            {(COMING_SOON[user?.user_type ?? ""] ?? []).map((item) => (
-              <li key={item} className="flex items-center gap-2 text-black/60 dark:text-white/60">
-                <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
-                {item}
+          {user?.user_type === "patient" ? (
+            <ul className="mt-3 space-y-1.5 text-sm">
+              <li>
+                <Link
+                  href="/dashboard/"
+                  className="flex items-center gap-2 font-medium text-green-700 hover:underline dark:text-green-400"
+                >
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  Go to your dashboard
+                </Link>
               </li>
-            ))}
-          </ul>
+              <li>
+                <Link
+                  href="/records/"
+                  className="flex items-center gap-2 font-medium text-green-700 hover:underline dark:text-green-400"
+                >
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  Medical records
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/card/"
+                  className="flex items-center gap-2 font-medium text-green-700 hover:underline dark:text-green-400"
+                >
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  My card
+                </Link>
+              </li>
+            </ul>
+          ) : user?.user_type === "hospital_staff" ? (
+            <ul className="mt-3 space-y-1.5 text-sm">
+              <li>
+                <Link
+                  href="/staff/"
+                  className="flex items-center gap-2 font-medium text-green-700 hover:underline dark:text-green-400"
+                >
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  Hospital workspace
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/staff/lookup/"
+                  className="flex items-center gap-2 font-medium text-green-700 hover:underline dark:text-green-400"
+                >
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  Card lookup
+                </Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className="mt-3 space-y-1.5 text-sm">
+              {(COMING_SOON[user?.user_type ?? ""] ?? []).map((item) => (
+                <li key={item} className="flex items-center gap-2 text-black/60 dark:text-white/60">
+                  <span className="size-1.5 rounded-full bg-green-600 dark:bg-green-400" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="mt-8 flex flex-col gap-2">
             <Link

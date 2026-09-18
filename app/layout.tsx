@@ -3,12 +3,15 @@ import {
   Geist_Mono,
   Gilda_Display,
   Google_Sans_Flex,
-  Instrument_Serif,
-} from "next/font/google";
+  Instrument_Serif, Geist } from "next/font/google";
 import { ThemeToggleShortcut } from "@/components/theme-toggle";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/lib/auth/provider";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const googleSansFlex = Google_Sans_Flex({
   variable: "--font-google-sans-flex",
@@ -42,7 +45,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${googleSansFlex.variable} ${instrumentSerif.variable} ${gildaDisplay.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={cn("h-full", "antialiased", googleSansFlex.variable, instrumentSerif.variable, gildaDisplay.variable, geistMono.variable, "font-sans", geist.variable)}
     >
       <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       <body className="min-h-full flex flex-col">
@@ -52,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           }}
         />
         <AuthProvider>
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </AuthProvider>
         <ThemeToggleShortcut />
       </body>

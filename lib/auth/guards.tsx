@@ -17,9 +17,12 @@ import { useEffect, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth/provider";
 import type { UserType } from "@/lib/auth/session";
 
-/** Where each role lands after sign-in. Dashboards ship in the next unit;
- * until then, /account is the authenticated landing for every role. */
-export function roleHome(): string {
+/** Where each role lands after sign-in. Patient and hospital-staff portals
+ * are live; platform admins land on the generic account page until their
+ * console ships. */
+export function roleHome(userType?: UserType | null): string {
+  if (userType === "patient") return "/dashboard/";
+  if (userType === "hospital_staff") return "/staff/";
   return "/account";
 }
 
@@ -60,7 +63,7 @@ export function ProtectedPage({ userTypes, children }: ProtectedPageProps) {
     if (userTypes && !userTypes.includes(user.user_type)) {
       // Authenticated but wrong portal → land on the account page instead
       // of flashing a forbidden page.
-      router.replace(roleHome());
+      router.replace(roleHome(user.user_type));
     }
   }, [status, user, userTypes, router]);
 
@@ -83,7 +86,7 @@ export function GuestPage({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (status === "loading") return;
     if (status === "authenticated" && user) {
-      router.replace(user.must_change_password ? "/change-password" : roleHome());
+      router.replace(user.must_change_password ? "/change-password" : roleHome(user.user_type));
     }
   }, [status, user, router]);
 

@@ -46,8 +46,8 @@ export default function SignInPage() {
 
     setSubmitting(true);
     try {
-      await login(id, password);
-      router.replace(roleHome());
+      const user = await login(id, password);
+      router.replace(roleHome(user.user_type));
     } catch (err) {
       // Phase 2 — ApiError.message is server-authored safe copy; anything
       // unexpected becomes a generic message, never raw error text.

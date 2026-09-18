@@ -22,6 +22,8 @@ import type { AuthUser, SessionState } from "@/lib/auth/session";
 
 export type AuthContextValue = SessionState & {
   user: AuthUser | null;
+  /** PatientProfile (or null for staff); populated by session bootstrap. */
+  profile: Record<string, unknown> | null;
   login: (identifier: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
 };
@@ -62,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return {
       status: state.status,
       user: null,
+      profile: null,
       login,
       logout,
     };
