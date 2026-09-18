@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-google-sans-flex);
+  --font-serif: var(--font-instrument-serif);
+  --font-mix: var(--font-gilda-display);
+  --font-mono: var(--font-geist-mono);
+  --color-lemon-200: #f5ffb8;
+  --color-lemon-300: #eaff85;
+  --color-lemon-400: #dcf84c;
+  --color-lemon-500: #c9e62e;
+}
+
+/* Phase 3 control: marquees are CSS-only; no JS, no runtime DOM writes. */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.marquee-track {
+  animation: marquee-left 38s linear infinite;
+}
+.marquee-track-right {
+  animation: marquee-right 38s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:hover .marquee-track-right {
+  animation-play-state: paused;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
