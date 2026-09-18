@@ -81,7 +81,6 @@ export interface StaffPatientProfile {
   date_of_birth: string | null;
   gender: string | null;
   blood_type: string | null;
-  residential_address: string | null;
 }
 
 export interface MedicalRecord {
@@ -207,6 +206,24 @@ export async function checkoutVisit(visitId: string): Promise<Visit> {
   });
   if (!visit) throw new Error("Checkout returned no data");
   return visit;
+}
+
+export interface AiSummaryResult {
+  summary: string | null;
+}
+
+/**
+ * Generate an AI clinical summary of the patient's chart (server-side
+ * Groq call; stateless — the summary is never persisted). Same grant gate
+ * as every other chart read: the server re-checks the active grant per
+ * request. Loading/error state lives in the caller.
+ */
+export async function summarizePatient(patientId: string): Promise<AiSummaryResult> {
+  const result = await apiFetch<AiSummaryResult>(`/patients/${patientId}/summarize/`, {
+    method: "POST",
+  });
+  if (!result) throw new Error("Summarize returned no data");
+  return result;
 }
 
 export { errorMessage as staffErrorMessage };

@@ -15,6 +15,7 @@
  *  - Check out: ends the visit and revokes its grants (server-side).
  *  - Verify: doctor-only (API enforces IsDoctor).
  */
+import { Sparkles } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -39,6 +40,7 @@ import {
   addPatientRecord,
   checkoutVisit,
   staffErrorMessage,
+  summarizePatient,
   useStaffPatient,
   useStaffPatientRecords,
 } from "@/lib/api/staff";
@@ -64,6 +66,26 @@ function PatientChart({ patientId }: { patientId: string }) {
   const [saving, setSaving] = useState(false);
   const [checkoutArmed, setCheckoutArmed] = useState(false);
   const [checkingOut, setCheckingOut] = useState(false);
+  const [summarizing, setSummarizing] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summaryError, setSummaryError] = useState<string | null>(null);
+
+  async function handleSummarize() {
+    if (summarizing) return; // in-flight lock (double-click guard)
+    setSummarizing(true);
+    setSummaryError(null);
+    try {
+      const result = await summarizePatient(patientId);
+      setSummary(result.summary);
+      if (!result.summary) {
+        setSummaryError("No records to summarize yet.");
+      }
+    } catch (e) {
+      setSummaryError(staffErrorMessage(e, "Could not generate the summary."));
+    } finally {
+      setSummarizing(false);
+    }
+  }
 
   async function handleAddNote(e: React.FormEvent) {
     e.preventDefault();
@@ -152,11 +174,36 @@ function PatientChart({ patientId }: { patientId: string }) {
                   <dt className="text-muted-foreground">Blood type</dt>
                   <dd>{p.blood_type ?? "—"}</dd>
                 </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">Address</dt>
-                  <dd className="text-right">{p.residential_address ?? "—"}</dd>
-                </div>
               </dl>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="px-4 lg:px-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
+            <CardTitle className="text-base">AI clinical summary</CardTitle>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSummarize}
+              disabled={summarizing}
+            >
+              <Sparkles className="mr-2 size-4" />
+              {summarizing ? "Summarizing…" : summary ? "Regenerate" : "See AI summary"}
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {summary ? (
+              <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{summary}</p>
+            ) : summaryError ? (
+              <p className="text-sm text-destructive">{summaryError}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Generate a concise brief of this patient&apos;s chart with AI.
+                Always verify against the raw records below — this is not medical advice.
+              </p>
             )}
           </CardContent>
         </Card>
