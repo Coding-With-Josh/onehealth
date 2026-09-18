@@ -8,6 +8,7 @@ import {
 import { ThemeToggleShortcut } from "@/components/theme-toggle";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/lib/auth/provider";
 
 const googleSansFlex = Google_Sans_Flex({
   variable: "--font-google-sans-flex",
@@ -50,7 +51,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{var s=localStorage.getItem('theme');var d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
           }}
         />
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <ThemeToggleShortcut />
       </body>
       </ThemeProvider>

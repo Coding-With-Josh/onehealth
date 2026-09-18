@@ -51,7 +51,7 @@ export function Pricing() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16">
           <div className="mx-auto max-w-xl text-center">
-            <h2 className="mb-6 text-3xl font-medium text-foreground sm:text-4xl">
+            <h2 className="font-mix mb-6 tracking-tight text-3xl font-semibold text-foreground sm:text-4xl">
               Simple, honest pricing
             </h2>
             <p className="text-base text-foreground/70">
@@ -82,11 +82,10 @@ export function Pricing() {
                   {plan.name}
                 </h3>
                 <p className="text-base text-foreground/70">
-                  {plan.name === "Starter" &&
-                    "For individuals getting started"}
-                  {plan.name === "Plus" && "For families and frequent travelers"}
-                  {plan.name === "Hospital" &&
-                    "For clinics and hospitals"}
+                  {plan.name === "Starter" && "For individuals getting started"}
+                  {plan.name === "Plus" &&
+                    "For families and frequent travelers"}
+                  {plan.name === "Hospital" && "For clinics and hospitals"}
                 </p>
 
                 <div className="flex items-end gap-1 py-6">

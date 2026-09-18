@@ -46,7 +46,7 @@ export function Hero() {
             <span className="inline-block h-1 w-2 bg-current" />
           </div>
 
-          <h1 className="mb-6 text-center text-4xl font-medium -tracking-[1.5px] text-foreground sm:text-5xl lg:text-6xl">
+          <h1 className="mb-6 text-center font-mix text-4xl font-semibold -tracking-[1.5px] text-foreground sm:text-5xl lg:text-6xl">
             Your health, records & care in{" "}
             <span className="bg-linear-to-r from-green-600 via-lemon-400 to-yellow-400 bg-clip-text text-transparent">
               one place

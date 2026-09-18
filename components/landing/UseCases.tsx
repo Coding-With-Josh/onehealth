@@ -30,7 +30,7 @@ export function UseCases() {
     <section className="border-y border-foreground/10 py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto mb-16 max-w-[590px] text-center">
-          <h2 className="mb-6 text-3xl font-medium text-foreground sm:text-4xl">
+          <h2 className="font-mix mb-6 tracking-tight text-3xl font-semibold text-foreground sm:text-4xl">
             Built for real care journeys
           </h2>
           <p className="text-base text-foreground/70">

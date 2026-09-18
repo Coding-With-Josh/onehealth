@@ -60,11 +60,7 @@ const TESTIMONIALS_ROW_2 = [
   },
 ];
 
-function TestimonialCard({
-  t,
-}: {
-  t: (typeof TESTIMONIALS_ROW_1)[number];
-}) {
+function TestimonialCard({ t }: { t: (typeof TESTIMONIALS_ROW_1)[number] }) {
   return (
     <li className="min-w-[420px] border border-foreground/10 bg-foreground/[0.03] p-6">
       <div className="mb-2 flex items-center gap-3">
@@ -89,12 +85,12 @@ export function Testimonials() {
     <section className="border-y border-foreground/10 py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto mb-16 max-w-lg text-center">
-          <h2 className="mb-6 text-3xl font-medium text-foreground sm:text-4xl">
+          <h2 className="font-mix mb-6 tracking-tight text-3xl font-semibold text-foreground sm:text-4xl">
             Hear from our community
           </h2>
           <p className="text-base text-foreground/70">
-            Patients, guardians and clinics use OneHealth to keep care
-            connected — in minutes, not weeks.
+            Patients, guardians and clinics use OneHealth to keep care connected
+            — in minutes, not weeks.
           </p>
         </div>
 

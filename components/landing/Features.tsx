@@ -35,7 +35,7 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
           <div className="max-w-xl">
-            <h2 className="mb-6 text-3xl font-medium text-foreground sm:text-4xl">
+            <h2 className="font-mix mb-6 tracking-tight text-3xl font-semibold text-foreground sm:text-4xl">
               What You Get
             </h2>
             <p className="text-base text-foreground/70">

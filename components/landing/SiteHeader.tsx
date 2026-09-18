@@ -42,13 +42,13 @@ export function SiteHeader() {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               href="/sign-in"
-              className="rounded-full px-5 py-2.5 font-mono text-sm font-medium text-foreground ring-1 ring-foreground/25 transition-all duration-300 hover:bg-foreground/10"
+              className="rounded-full px-5 py-2.5 font-sans tracking-tight text-sm font-medium text-foreground ring-1 ring-foreground/25 transition-all duration-300 hover:bg-foreground/10"
             >
               Login
             </Link>
             <Link
               href="/sign-up"
-              className="rounded-full bg-green-600 px-5 py-2.5 font-mono text-sm font-medium text-white transition-all duration-300 hover:bg-green-500"
+              className="rounded-full bg-green-600 px-5 py-2.5 font-sans text-sm tracking-tight font-medium text-white transition-all duration-300 hover:bg-green-500"
             >
               Start for free
             </Link>
